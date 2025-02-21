@@ -1,123 +1,189 @@
-# Golobe - Your Complete Travel Companion
+# Golobe Backend - Travel Booking Platform API
 
 ## Overview
-Golobe is a comprehensive travel booking platform that enables users to book flights, hotels, and activities all in one place. Our platform aims to simplify the travel planning process by providing a seamless, user-friendly interface for all your travel needs.
 
-## Features
+Golobe's backend provides a robust API infrastructure for a comprehensive travel booking platform, handling flight bookings, hotel reservations, and activity bookings. The system is designed for high performance, scalability, and reliability to support seamless travel planning operations.
 
-### Core Functionalities
-- **Flight Booking**
-  - Search and compare flights from multiple airlines
-  - Filter by price, duration, stops, and airlines
-  - Seat selection and meal preferences
-  - Multi-city booking support
+## Core Features
 
-- **Hotel Booking**
-  - Extensive hotel database worldwide
-  - Advanced filtering by amenities, price, and rating
-  - Room type selection
-  - Virtual hotel tours and photo galleries
+### Booking Services
 
-- **Activity & Attraction Tickets**
-  - Local tours and experiences
-  - Tourist attractions and landmarks
-  - Event tickets
-  - Guided tours
+-   Flight reservation management
+-   Hotel booking processing
+-   Activity and attraction ticket handling
+-   Multi-city booking support
+-   Price calculation and dynamic pricing
+-   Inventory management
 
-### Additional Features
-- User account management
-- Booking history and tracking
-- Price alerts and notifications
-- Mobile-responsive design
-<!-- - Multi-currency support
-- Multi-language interface
-- Secure payment processing
-- Email confirmation system -->
+### User Management
+
+-   Authentication and authorization
+-   User profiles and preferences
+-   Booking history tracking
+-   Notification system
+
+### System Features
+
+-   Caching system for improved performance
+-   Rate limiting and request throttling
+-   Automated booking confirmation
+-   Payment processing integration
+-   Data validation and sanitization
 
 ## Technical Stack
 
-### Frontend
-- React.js
-- Tailwind CSS for styling
-- Redux for state management
-- Shadcn components
+### Core Technologies
 
-### Backend
-- Node.js with Express
-- MongoDB for database
-- Redis for caching
-- JWT for authentication
+-   Node.js (v20 or higher)
+-   Express.js for API routing
+-   MongoDB for primary database
+-   Redis for caching and session management
 
-<!-- ### APIs Integrated
-- Flight booking APIs (Amadeus/Sabre)
-- Hotel booking APIs (Booking.com/Expedia)
-- Payment gateway APIs
-- Maps and location services -->
+### Security
+
+-   JWT for authentication
+-   bcrypt for password hashing
+-   helmet for HTTP security
+-   rate-limiting middleware
+
+### Development Tools
+
+-   ESLint for code linting
+-   Jest for testing
+-   Swagger for API documentation
+-   Docker for containerization
 
 ## Getting Started
 
 ### Prerequisites
+
+```
 - Node.js (v20 or higher)
 - MongoDB
 - Redis
 - npm or yarn
+```
 
 ### Installation
+
 1. Clone the repository
+
 ```bash
-git clone https://github.com/UltimateProdigy/golobe.git
-cd golobe
+git clone https://github.com/UltimateProdigy/golobe-backend.git
+cd golobe/server
 ```
 
 2. Install dependencies
+
 ```bash
 npm install
 ```
 
 3. Set up environment variables
+
 ```bash
 cp .env.example .env
 ```
-Edit `.env` with your configuration
 
-4. Start the development server
+4. Configure your `.env` file:
+
+```
+DATABASE_URL=mongodb://localhost:27017/golobe
+REDIS_URL=redis://localhost:6379
+JWT_SECRET=your_jwt_secret
+PORT=3000
+NODE_ENV=development
+```
+
+5. Start the development server
+
 ```bash
 npm run dev
 ```
 
-### Environment Variables
-```
-DATABASE_URL=mongodb://localhost:27017/golobe
-JWT_SECRET=your_jwt_secret
-```
-
 ## Project Structure
+
 ```
-golobe/
-├── client/           # Frontend React application
-├── server/           # Backend Node.js application
-├── common/           # Shared utilities and types
-├── docs/            # Documentation
-└── scripts/         # Build and deployment scripts
+server/
+├── src/
+│   ├── config/         # Configuration files
+│   ├── controllers/    # Request handlers
+│   ├── middleware/     # Custom middleware
+│   ├── models/        # Database models
+│   ├── routes/        # API routes
+│   ├── services/      # Business logic
+│   ├── utils/         # Helper functions
+│   └── server.js      # App entry point
+├── tests/             # Test files
+├── docs/              # API documentation
+└── scripts/           # Utility scripts
 ```
 
 ## API Documentation
-Detailed API documentation is available at `/docs/api.md`
+
+### Main Endpoints
+
+#### Authentication
+
+-   POST /api/auth/register
+-   POST /api/auth/login
+-   POST /api/auth/refresh-token
+
+#### Flights
+
+-   GET /api/flights/search
+-   POST /api/flights/booking
+-   GET /api/flights/booking/:id
+
+#### Hotels
+
+-   GET /api/hotels/search
+-   POST /api/hotels/booking
+-   GET /api/hotels/booking/:id
+
+#### Activities
+
+-   GET /api/activities/search
+-   POST /api/activities/booking
+-   GET /api/activities/booking/:id
+
+Detailed API documentation is available in `/docs/api.md`
 
 ## Testing
+
 ```bash
-# Run frontend tests
-npm run test:client
+# Run unit tests
+npm run test
 
-# Run backend tests
-npm run test:server
+# Run integration tests
+npm run test:integration
 
-# Run e2e tests
-npm run test:e2e
+# Generate test coverage report
+npm run test:coverage
 ```
 
+## Deployment
+
+### Docker
+
+```bash
+# Build Docker image
+docker build -t golobe-backend .
+
+# Run container
+docker run -p 3000:3000 golobe-backend
+```
+
+### Production Considerations
+
+-   Set up proper monitoring and logging
+-   Configure appropriate security measures
+-   Set up database backups
+-   Implement CI/CD pipeline
+-   Configure load balancing
 
 ## Contributing
+
 1. Fork the repository
 2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
 3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
@@ -125,21 +191,19 @@ npm run test:e2e
 5. Open a Pull Request
 
 ## License
+
 This project is licensed under the MIT License - see the LICENSE.md file for details
 
 ## Contact
-- Project Lead - [Akinola Ayobami](mailto:ayobamiakinola84@gmail.com)
-- Project Link: https://github.com/UltimateProdigy/golobe
 
-## Acknowledgments
-- List of third-party services and libraries used
-- Design inspiration
-- Contributors
+-   Backend Lead - [Akinola Ayobami](mailto:ayobamiakinola84@gmail.com)
+-   Project Link: https://github.com/UltimateProdigy/golobe-backend
 
 ## Roadmap
-- [ ] Implement AI-powered travel recommendations
-- [ ] Add vacation packages booking
-- [ ] Integrate car rental services
-- [ ] Add travel insurance options
-- [ ] Implement chat support
-- [ ] Add loyalty program
+
+-   [ ] Implement caching strategy for frequently accessed data
+-   [ ] Add webhook support for third-party integrations
+-   [ ] Implement automated backup system
+-   [ ] Add real-time booking updates
+-   [ ] Improve API rate limiting
+-   [ ] Add support for multiple payment providers
