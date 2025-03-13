@@ -31,9 +31,9 @@ const userSchema = new Schema(
 			required: [true, "Phone Number is required"],
 			unique: true,
 		},
-		flight: {
+		booking: {
 			type: Schema.Types.ObjectId,
-			ref: "Flight",
+			ref: "Booking",
 		},
 		refreshToken: String,
 	},

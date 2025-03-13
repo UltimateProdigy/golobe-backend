@@ -2,20 +2,9 @@ const mongoose = require("mongoose");
 const { Schema } = mongoose;
 
 const flightSchema = new Schema({
-	user: {
-		type: Schema.Types.ObjectId,
+	name: {
+		type: String,
 		ref: "User",
-		required: true,
-	},
-	city: {
-		type: Schema.Types.ObjectId,
-		ref: "City",
-		required: true,
-	},
-	country: {
-		type: Schema.Types.ObjectId,
-		ref: "Country",
-		required: true,
 	},
 });
 
