@@ -15,7 +15,7 @@ const authenticateUser = async (req, res) => {
 			},
 			process.env.ACCESS_TOKEN_SECRET,
 			{
-				expiresIn: "2d",
+				expiresIn: "1d",
 			}
 		);
 		const refreshToken = jwt.sign(
@@ -31,8 +31,11 @@ const authenticateUser = async (req, res) => {
 			httpOnly: true,
 			maxAge: 24 * 60 * 60 * 1000,
 		});
+        console.log(user)
 		res.json({
 			message: "User is logged in!",
+			firstName: user.firstName,
+			lastName: user.lastName,
 			accessToken,
 		});
 	} else {
