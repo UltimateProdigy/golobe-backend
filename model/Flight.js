@@ -4,7 +4,11 @@ const { Schema } = mongoose;
 const flightSchema = new Schema({
 	name: {
 		type: String,
-		ref: "User",
+		required: true
+	},
+    cost: {
+		type: Number,
+		required: true,
 	},
 });
 

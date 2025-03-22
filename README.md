@@ -125,9 +125,9 @@ server/
 
 #### Authentication
 
--   POST /api/auth/register
+-   POST /register
 -   POST /api/auth/login
--   POST /api/auth/refresh-token
+-   POST /api/auth/refresh
 
 #### Flights
 
@@ -137,15 +137,10 @@ server/
 
 #### Hotels
 
--   GET /api/hotels/search
+-   GET /api/hotels
 -   POST /api/hotels/booking
 -   GET /api/hotels/booking/:id
 
-#### Activities
-
--   GET /api/activities/search
--   POST /api/activities/booking
--   GET /api/activities/booking/:id
 
 Detailed API documentation is available in `/docs/api.md`
 

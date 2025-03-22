@@ -10,6 +10,10 @@ const hotelSchema = new Schema({
 		type: String,
 		required: true,
 	},
+	cost: {
+		type: Number,
+		required: true,
+	},
 	city: {
 		type: Schema.Types.ObjectId,
 		ref: "City",
