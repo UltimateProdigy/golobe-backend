@@ -10,6 +10,10 @@ const countrySchema = new Schema({
 		type: String,
 		required: true,
 	},
+	iso: {
+		type: String,
+		required: true,
+	},
 });
 
 module.exports = mongoose.model("Country", countrySchema);
