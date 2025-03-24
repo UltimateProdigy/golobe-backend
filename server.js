@@ -10,6 +10,7 @@ const corsOptions = require("./config/corsOptions");
 const { errorHandler } = require("./middleware/errorHandler");
 const { logger } = require("./middleware/logEvents");
 const { verifyJWT } = require("./middleware/verifyJWT");
+// const seedDatabase = require('./seed')
 
 const PORT = process.env.PORT || 3500;
 connectDb();
@@ -21,16 +22,20 @@ app.use(cors(corsOptions));
 
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
+// seedDatabase();
+
 
 app.use("/register", require("./routes/register"));
 app.use("/auth", require("./routes/auth/login"));
 app.use("/auth", require("./routes/auth/refresh"));
 app.use("/auth", require("./routes/auth/logout"));
+app.use("/api", require("./routes/api/city"));
+app.use("/api", require("./routes/api/country"));
+app.use("/api", require("./routes/api/hotels"));
+app.use("/api", require("./routes/api/flights"));
 
 app.use(verifyJWT);
 app.use("/api", require("./routes/api/bookings"));
-app.use("/api", require("./routes/api/hotels"));
-app.use("/api", require("./routes/api/flights"));
 
 app.all("*", (req, res) => {
 	res.status(404);

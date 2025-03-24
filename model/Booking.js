@@ -26,7 +26,7 @@ const bookingSchema = new Schema({
 		type: Schema.Types.ObjectId,
 		ref: "Flight",
 		required: true,
-	},
-});
+	}
+}, { timestamps: true });
 
 module.exports = mongoose.model("Booking", bookingSchema);

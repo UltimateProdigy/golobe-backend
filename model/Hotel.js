@@ -14,6 +14,14 @@ const hotelSchema = new Schema({
 		type: Number,
 		required: true,
 	},
+	review: {
+		type: Number,
+		required: true,
+	},
+	amenities: {
+		type: [String],
+		default: []
+	},
 	city: {
 		type: Schema.Types.ObjectId,
 		ref: "City",
