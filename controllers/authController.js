@@ -1,9 +1,9 @@
 const bcrypt = require("bcrypt");
+const crypto = require('crypto');
 const User = require("../model/User");
 const jwt = require("jsonwebtoken");
+const transporter = require('../config/emailConfig')
 
-// @desc Login
-// @route GET /auth
 const login = async (req, res) => {
 	const { email, password } = req.body;
 	const user = await User.findOne({ email: email }).exec();
@@ -48,10 +48,6 @@ const login = async (req, res) => {
 	}
 };
 
-// @desc Refresh
-// @route GET /auth/refresh
-
-// TODO: Install Async Handler from Express Async Handler
 
 const refresh = (req, res) => {
 	const cookies = req.cookies;
@@ -61,7 +57,7 @@ const refresh = (req, res) => {
 	jwt.verify(
 		refreshToken,
 		process.env.REFRESH_TOKEN_SECRET,
-		asyncHandler(async (err, decoded) => {
+		async (err, decoded) => {
 			if (err) return res.status(403).json({ message: "Forbidden" });
 			const foundUser = await User.findOne({ email: decoded.email });
 			const accessToken = jwt.sign(
@@ -70,12 +66,10 @@ const refresh = (req, res) => {
 				{ expiresIn: "4d" }
 			);
 			res.json({ accessToken });
-		})
-	);
+		});
 };
 
-// @desc Logout
-// @route POST /auth/logout
+
 const logout = (req, res) => {
 	const cookies = req.cookies;
 	if (!cookies?.jwt) return res.sendStatus(204);
@@ -83,4 +77,41 @@ const logout = (req, res) => {
 	res.json({ message: "Cookie Cleared" });
 };
 
-module.exports = { login, refresh, logout };
+const resetPassword = async (req, res) => {
+	const { email } = req.body;
+	if (!email) {
+		return res.status(400).json({ error: "Email is required" });
+	}
+
+	try {
+		const user = await User.findOne({ email });
+		if (!user) {
+			return res.status(200).json({ message: "If this email exists, a reset link will be sent" });
+		}
+		const resetToken = crypto.randomBytes(32).toString('hex');
+		const resetTokenExpiry = Date.now() + 3600000;
+
+		user.resetPasswordToken = resetToken;
+		user.resetPasswordExpires = resetTokenExpiry;
+		await user.save();
+
+		const resetUrl = `${req.protocol}://${req.get('host')}/reset-password/${resetToken}`;
+
+		const mailOptions = {
+			from: `<${process.env.EMAIL_FROM}>`,
+			to: user.email,
+			subject: 'Password Reset Request',
+			text: `You requested a password reset. Click the link below:\n\n${resetUrl}\n\nThis link expires in 1 hour.`,
+			html: `<p>You requested a password reset. Click the link below:</p>
+				   <a href="${resetUrl}">Reset Password</a>
+				   <p>This link expires in 1 hour.</p>`
+		};
+
+		await transporter.sendMail(mailOptions);
+	} catch (err) {
+		res.status(500).json({ message: err.message })
+	}
+
+}
+
+module.exports = { login, refresh, logout, resetPassword };

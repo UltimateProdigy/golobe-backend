@@ -1,5 +1,3 @@
-// TODO: Install Rate Limit Library from Express Rate Limit
-
 const rateLimit = require("express-rate-limit");
 const { logEvents } = require("./logEvents");
 
