@@ -35,6 +35,10 @@ const userSchema = new Schema(
 			type: Schema.Types.ObjectId,
 			ref: "Booking",
 		},
+		card: {
+			type: Schema.Types.ObjectId,
+			ref: "Card",
+		},
 		refreshToken: String,
 	},
 	{ timestamps: true }
