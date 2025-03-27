@@ -31,6 +31,7 @@ app.use("/register", require("./routes/register"));
 app.use("/auth/login", require("./routes/auth/login"));
 app.use("/auth/refresh-token", require("./routes/auth/refresh"));
 app.use("/auth/logout", require("./routes/auth/logout"));
+app.use('/auth/session', require('./routes/auth/session'))
 app.use("/api/city", require("./routes/api/city"));
 app.use("/api/country", require("./routes/api/country"));
 app.use("/api/hotels", require("./routes/api/hotels"));
