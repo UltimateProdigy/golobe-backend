@@ -14,14 +14,18 @@ const login = async (req, res) => {
 		const accessToken = jwt.sign(
 			{
 				email: user.email,
+				id: user.id
 			},
 			process.env.ACCESS_TOKEN_SECRET,
 			{
-				expiresIn: "1d",
+				expiresIn: "2d",
 			}
 		);
 		const refreshToken = jwt.sign(
-			{ email: user.email },
+			{
+				email: user.email,
+				id: user.id
+			},
 			process.env.REFRESH_TOKEN_SECRET,
 			{ expiresIn: "7d" }
 		);
@@ -38,9 +42,11 @@ const login = async (req, res) => {
 		console.log(user);
 		res.json({
 			message: "User is logged in!",
-			id: user.id,
-			firstName: user.firstName,
-			lastName: user.lastName,
+			user: {
+				id: user.id,
+				firstName: user.firstName,
+				lastName: user.lastName
+			},
 			accessToken,
 		});
 	} else {
@@ -114,4 +120,26 @@ const resetPassword = async (req, res) => {
 
 }
 
-module.exports = { login, refresh, logout, resetPassword };
+const session = async (req, res) => {
+	if (!req.user?.email) {
+		return res.status(401).json({ error: "Not authenticated" });
+	}
+
+	try {
+		const user = await User.findOne({ email: req.user.email });
+		if (!user) {
+			return res.status(404).json({ error: "User not found" });
+		}
+		res.json({
+			user: {
+				id: user.id,
+				firstName: user.firstName,
+				lastName: user.lastName
+			}
+		});
+	} catch (error) {
+		res.status(500).json({ error: error.message });
+	}
+}
+
+module.exports = { login, refresh, logout, resetPassword, session };
