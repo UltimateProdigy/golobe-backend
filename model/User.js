@@ -24,7 +24,7 @@ const userSchema = new Schema(
 			type: String,
 		},
 		dateOfBirth: {
-			type: String,
+			type: Date,
 		},
 		phoneNumber: {
 			type: String,

@@ -39,7 +39,7 @@ app.use("/api/flight", require("./routes/api/flights"));
 
 app.use(verifyJWT);
 app.use("/api/card", require('./routes/api/card'));
-app.use("/api", require("./routes/api/bookings"));
+app.use("/api/booking", require("./routes/api/bookings"));
 app.use("/api/user", require('./routes/api/user'))
 
 app.all("*", (req, res) => {
