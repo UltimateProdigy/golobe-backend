@@ -7,10 +7,10 @@ const {
 	createPlaneBooking
 } = require("../../controllers/bookingsControllers");
 
-router.route("/:userId/bookings").get(userBookings);
-router.route("/:userId/bookings/:bookingId").get(bookingDetails);
-router.route("/booking/hotel").post(createHotelBooking);
-router.route("/booking/flight").post(createPlaneBooking)
+router.route("/:userId").get(userBookings);
+router.route("/:bookingId").get(bookingDetails);
+router.route("/hotel").post(createHotelBooking);
+router.route("/flight").post(createPlaneBooking)
 
 
 module.exports = router;

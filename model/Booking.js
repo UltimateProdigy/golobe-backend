@@ -20,13 +20,14 @@ const bookingSchema = new Schema({
 	hotelId: {
 		type: Schema.Types.ObjectId,
 		ref: "Hotel",
-		required: true,
 	},
 	flightId: {
 		type: Schema.Types.ObjectId,
 		ref: "Flight",
-		required: true,
-	}
+	},
+	checkIn: Date,
+	checkOut: Date,
+	bookingType: String,
 }, { timestamps: true });
 
 module.exports = mongoose.model("Booking", bookingSchema);

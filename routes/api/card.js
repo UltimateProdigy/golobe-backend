@@ -3,6 +3,6 @@ const router = express.Router();
 const { getUserCards, addCard } = require('../../controllers/cardController')
 
 router.route('/:userId').get(getUserCards)
-router.route('/').post(addCard)
+router.route('/:userId').post(addCard)
 
 module.exports = router

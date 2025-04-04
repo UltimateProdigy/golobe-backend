@@ -18,8 +18,8 @@ const userBookings = async (req, res) => {
 
 const bookingDetails = async (req, res) => {
 	try {
-		const { userId, bookingId } = req.params;
-		const booking = await Booking.findOne({ user: userId, _id: bookingId })
+		const { bookingId } = req.params;
+		const booking = await Booking.findOne({ _id: bookingId })
 			.populate("city")
 			.populate("country")
 			.populate("hotel")
@@ -32,17 +32,18 @@ const bookingDetails = async (req, res) => {
 
 const createHotelBooking = async (req, res) => {
 	try {
-		const { user, city, country, hotel } = req.body;
+		const { user, city, country, hotel, checkIn, checkOut } = req.body;
 
-		if (!hotel) throw new Error('hotelId is required for hotel booking');
+		if (!hotel) return res.status(401).json({ message: 'hotelId is required for hotel booking' });
+		if (!checkIn && !checkOut) return res.status(401).json({ message: 'Check In and Checkout Time is required for hotel booking' });
 
 		const booking = await Booking.create({
-			user, city, country, hotel
+			user, city, country, hotel, checkIn, checkOut, bookingType: 'hotel'
 		});
 
 		return res.status(201).json({
 			message: "Hotel booking created successfully",
-			id: booking._id,
+			id: booking.id,
 			details: {
 				createdAt: booking.createdAt,
 				type: 'hotel'
@@ -62,15 +63,15 @@ const createPlaneBooking = async (req, res) => {
 	try {
 		const { user, city, country, flight } = req.body;
 
-		if (!flight) throw new Error('flightId is required for flight booking');
+		if (!flight) return res.status(401).json({ message: 'flightId is required for flight booking' });
 
 		const booking = await Booking.create({
-			user, city, country, flight
+			user, city, country, flight, bookingType: 'flight'
 		});
 
 		return res.status(201).json({
 			message: "Flight booking created successfully",
-			id: booking._id,
+			id: booking.id,
 			details: {
 				createdAt: booking.createdAt,
 				type: 'flight'
