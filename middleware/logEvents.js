@@ -23,8 +23,8 @@ const logEvents = async (message, fileName) => {
 
 const logger = (req, res, next) => {
 	logEvents(
-		`Request URL: ${req.url} \t Request Method: ${req.method}`,
-		"reqLog.txt"
+		`Request URL: ${req.url} \t Request Method: ${req.method}\n`,
+		"errLog.log"
 	);
 	console.log(`Request URL: ${req.url} Request Method: ${req.method} `);
 	next();

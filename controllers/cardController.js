@@ -31,7 +31,7 @@ const addCard = async (req, res) => {
             card: {
                 id: newCard._id,
                 cardName: newCard.cardName,
-                last4: newCard.cardNumber,
+                last4: newCard.cardNumber.slice(-4),
                 expDate: newCard.expDate,
             },
         });
@@ -46,7 +46,7 @@ const addCard = async (req, res) => {
 
 const getUserCards = async (req, res) => {
     const { userId } = req.params;
-    const card = await Card.find({ userId: userId });
+    const card = await Card.find({ userId: userId }, { cvc: 0, userId: 0 });
     if (!card) res.status(401).json({ message: "No Card for user" });
     res.status(201).json(card);
 };
