@@ -14,6 +14,7 @@ const loginLimiter = rateLimit({
 			"errlog.log"
 		);
 		res.status(options.statusCode).send(options.message);
+		next();
 	},
 	standardHeaders: true,
 	legacyHeaders: false,
