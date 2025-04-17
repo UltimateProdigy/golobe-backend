@@ -11,6 +11,7 @@ const { errorHandler } = require("./middleware/errorHandler");
 const { logger } = require("./middleware/logEvents");
 const { verifyJWT } = require("./middleware/verifyJWT");
 const swagger = require("./utils/swagger");
+
 // const seedDatabase = require('./seed')
 
 const PORT = process.env.PORT || 3500;
