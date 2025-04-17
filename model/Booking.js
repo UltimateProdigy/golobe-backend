@@ -8,23 +8,15 @@ const bookingSchema = new Schema(
             ref: "User",
             required: true,
         },
-        cityId: {
-            type: Schema.Types.ObjectId,
-            ref: "City",
+        city: {
+            type: String,
             required: true,
         },
-        countryId: {
-            type: Schema.Types.ObjectId,
-            ref: "Country",
-            required: true,
+        hotel: {
+            type: String,
         },
-        hotelId: {
-            type: Schema.Types.ObjectId,
-            ref: "Hotel",
-        },
-        flightId: {
-            type: Schema.Types.ObjectId,
-            ref: "Flight",
+        flight: {
+            type: String,
         },
         flightDate: Date,
         takeOff: String,
