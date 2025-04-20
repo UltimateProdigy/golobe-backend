@@ -40,6 +40,7 @@ const allHotels = async (req, res) => {
             });
 
         const hotels = hotelsResponse.data.map((hotel) => ({
+            id: hotel.id,
             name: hotel.name,
             images: hotel.media?.urls?.map((url) => ({ url })) || [],
             amenities: [hotel.amenities],
