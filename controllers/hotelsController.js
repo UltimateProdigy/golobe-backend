@@ -11,6 +11,7 @@ const amadeus = new Amadeus({
 const allHotels = async (req, res) => {
     try {
         const { city } = req.query;
+
         if (!city || typeof city !== "string") {
             return res.status(400).json({
                 error: "City parameter is required and must be a string",
@@ -24,36 +25,61 @@ const allHotels = async (req, res) => {
             return res.json(cachedHotels);
         }
 
-        const cityCodeResponse = await amadeus?.referenceData?.locations.get({
+        const cityCodeResponse = await amadeus.referenceData.locations.get({
             keyword: city,
-            subType: "CITY",
+            subType: "CITY,AIRPORT",
         });
 
-        const cityCode = cityCodeResponse.data[0]?.iataCode;
+        if (!cityCodeResponse.data || cityCodeResponse.data.length === 0) {
+            return res.status(404).json({
+                error: "City not found",
+            });
+        }
+
+        const cityCode = cityCodeResponse.data[0].iataCode;
         if (!cityCode) {
-            res.status(401).json({ message: "City not found" });
+            return res.status(404).json({
+                error: "No IATA code found for this city",
+            });
         }
 
         const hotelsResponse =
-            await amadeus?.referenceData?.locations?.hotels?.byCity?.get({
+            await amadeus.referenceData.locations.hotels.byCity.get({
                 cityCode: cityCode,
+                page: { limit: 10, offset: 0 },
             });
 
+        if (!hotelsResponse.data) {
+            return res.status(404).json({
+                error: "No hotels found for this city",
+            });
+        }
         const hotels = hotelsResponse.data.map((hotel) => ({
-            id: hotel.id,
+            id: hotel.hotelId || hotel.id,
             name: hotel.name,
+            address: hotel.address,
             images: hotel.media?.urls?.map((url) => ({ url })) || [],
-            amenities: [hotel.amenities],
-            ratings: [hotel.ratings],
+            amenities: hotel.amenities || [],
+            rating: hotel.rating || null,
             price: hotel.offers?.price?.total || "Price on request",
+            latitude: hotel.geoCode?.latitude,
+            longitude: hotel.geoCode?.longitude,
         }));
 
         hotelCache.set(cacheKey, hotels);
 
-        res.json(hotels);
+        return res.json(hotels);
     } catch (err) {
         console.error("Hotel API error:", err);
-        res.status(500).json({ error: "Failed to fetch hotels" });
+
+        if (err.response) {
+            return res.status(err.response.statusCode || 500).json({
+                error: err.description || "Amadeus API error",
+            });
+        }
+        return res.status(500).json({
+            error: "Internal server error",
+        });
     }
 };
 
