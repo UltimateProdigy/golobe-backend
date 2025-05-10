@@ -25,28 +25,9 @@ const allHotels = async (req, res) => {
             return res.json(cachedHotels);
         }
 
-        const cityCodeResponse = await amadeus.referenceData.locations.get({
-            keyword: city,
-            subType: "CITY,AIRPORT",
-        });
-
-        if (!cityCodeResponse.data || cityCodeResponse.data.length === 0) {
-            return res.status(404).json({
-                error: "City not found",
-            });
-        }
-
-        const cityCode = cityCodeResponse.data[0].iataCode;
-        if (!cityCode) {
-            return res.status(404).json({
-                error: "No IATA code found for this city",
-            });
-        }
-
         const hotelsResponse =
             await amadeus.referenceData.locations.hotels.byCity.get({
-                cityCode: cityCode,
-                page: { limit: 10, offset: 0 },
+                cityCode: city.toUpperCase()
             });
 
         if (!hotelsResponse.data) {
